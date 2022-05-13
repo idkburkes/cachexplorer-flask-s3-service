@@ -10,14 +10,17 @@ from dotenv import load_dotenv
 
 # Setup
 app = Flask(__name__)
-cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
-app.config['CORS_HEADERS'] = 'Content-Type'
-load_dotenv()
 
 # Environment Variables
+load_dotenv()
 AWS_KEY = os.getenv('AWS_KEY')
 AWS_SECRET = os.getenv('AWS_SECRET')
 AWS_BUCKET = os.getenv('AWS_BUCKET')
+LOCALHOST = os.getenv('LOCALHOST')
+NEXTJS_URL = os.getenv('NEXTJS_URL')
+
+cors = CORS(app, resources={r"/*": {"origins": [LOCALHOST, NEXTJS_URL]}})
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 session = boto3.Session(aws_access_key_id=AWS_KEY,
                         aws_secret_access_key=AWS_SECRET)
